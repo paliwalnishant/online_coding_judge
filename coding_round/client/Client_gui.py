@@ -1,0 +1,442 @@
+import tkSimpleDialog
+from Tkinter import *
+import tkFont
+import Tkinter as tk2
+from tkFileDialog import askopenfilename
+import tkMessageBox
+import socket,time,thread
+import sys
+import getpass,os
+import datetime
+import tkFileDialog
+import tkMessageBox
+import Tkinter
+
+class Work_space:
+     def donothing(self):
+       print "a"
+
+     def file_save(self):
+       f = tkFileDialog.asksaveasfile(mode='w', defaultextension=".txt")
+       if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+         return
+       text2save = str(text.get(1.0, END)) # starts from `1.0`, not `0.0`
+       f.write(text2save)
+       f.close() 
+
+     def work(self):
+	root = Tk()
+        root.geometry("500x500")
+        menubar=Menu(root)
+        global text
+        text=Text(root)
+        text.pack()
+	filemenu=Menu(menubar,tearoff=0)
+	filemenu.add_command(label="New", command=self.donothing)
+	filemenu.add_command(label="Open", command=self.donothing)
+	filemenu.add_command(label="Save", command=self.file_save)
+	filemenu.add_command(label="Save as...", command=self.donothing)
+	filemenu.add_command(label="Close", command=self.donothing)
+	filemenu.add_separator()
+	filemenu.add_command(label="Exit", command=root.quit)
+	menubar.add_cascade(label="File", menu=filemenu)
+
+	editmenu=Menu(menubar,tearoff=0)
+	editmenu.add_command(label="Undo", command=self.donothing)
+	editmenu.add_command(label="Copy", command=self.donothing)
+	editmenu.add_command(label="Paste", command=self.donothing)
+	menubar.add_cascade(label="Edit", menu=editmenu)
+
+	helpmenu=Menu(menubar,tearoff=0)
+	helpmenu.add_command(label="Help",command=self.donothing)
+	menubar.add_cascade(label="Help",menu=helpmenu)
+
+	root.config(menu=menubar)
+	root.mainloop() 
+
+
+
+class Example(Frame):
+
+    def __init__(self, parent):
+        Frame.__init__(self, parent)   
+
+        self.parent = parent        
+        self.initUI()
+
+    def initUI(self):
+
+        self.parent.title("File dialog")
+        self.pack(fill=BOTH, expand=1)
+
+        menubar = Menu(self.parent)
+        self.parent.config(menu=menubar)
+
+        fileMenu = Menu(menubar)
+        fileMenu.add_command(label="Open", command=self.onOpen)
+        menubar.add_cascade(label="File", menu=fileMenu)        
+
+        self.txt = Text(self)
+        self.txt.pack(fill=BOTH, expand=1)
+
+
+    def onOpen(self):
+
+        ftypes = [('Python files', '*.py'), ('All files', '*')]
+        dlg = tkFileDialog.Open(self, filetypes = ftypes)
+        fl = dlg.show()
+
+        if fl != '':
+            text = self.readFile(fl)
+            self.txt.insert(END, text)
+
+    def readFile(self, filename):
+
+        f = open(filename, "r")
+        text = f.read()
+        return text
+
+def main_():
+
+    root = Tk()
+    ex = Example(root)
+    root.geometry("300x250+300+300")
+    root.mainloop() 
+
+class App:
+	
+    def __init__(self, master):
+	frame = Frame(master, width=2000, height=1000, bg="black",  colormap="new")
+	frame.pack()
+	master.title("LOGIN SCREEN")
+
+	abc=tkFont.Font(family="Helvetica", size=40, weight ='bold' )	
+	abc1=tkFont.Font(family="Helvetica", size=16, weight ='bold')
+	abc2=tkFont.Font(family="Helvetica", size=20, weight ='bold')
+	abc3=tkFont.Font(family="Helvetica", size=15, weight ='bold' )
+
+	l=Label(frame, text="CODE SAGE", font=abc, bg="black",fg="#ffa700")
+        l.pack()
+	#l.place(relx=0.45, rely=0.15, anchor=CENTER)
+	#l=Label(frame, text="SAGE", font=abc, bg="black")	
+	#l.pack()
+	#l.place(relx=0.60, rely=0.345, anchor=CENTER)
+	l=Label(frame, text="coding round", font=abc3,bg="black", fg="#ffa700")
+        l.pack()
+        l.place(relx=0.45, rely=0.15, anchor=CENTER)
+	
+	l1=Label(frame, text="Username:", font=abc2, bg="black",fg="#ffa700")
+	l1.pack()
+	l1.place(relx=0.2, rely=0.57, anchor=CENTER)
+        l2=Label(frame, text="Password:", bg="black",fg="#ffa700", font=abc2)
+	l2.pack()
+	l2.place(relx=0.2, rely=0.67, anchor=CENTER)
+
+        self.e1 = Entry(frame, font=abc2, fg="black")
+	self.e1.pack(side=RIGHT,padx=15, pady=15)
+	self.e1.place(relx=0.6, rely=0.57, anchor=CENTER)
+        self.e2 = Entry(frame,show="*", font=abc2)
+	self.e2.place(relx=0.6, rely=0.67, anchor=CENTER)
+       
+	#photo=PhotoImage(file="jii.gif")
+	#ph=Label(frame,image=photo , bg="black")
+	#ph.photo=photo
+	#ph.pack()
+	#ph.place(relx=0.03,rely=0.03)
+	        
+	button1 = self.button = Button(frame, text="LOGIN",font=abc1, command=self.login)
+        button1.pack(side=LEFT,padx=15, pady=55)
+	button1.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button1.place(relx=0.3, rely=0.83, anchor=CENTER)		
+	button2=self.button = Button(frame, text="QUIT", font=abc1, command=frame.quit)
+	button2.pack(side=LEFT)
+	button2.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")	
+	button2.place(relx=0.7, rely=0.83, anchor=CENTER)			
+        
+	frame.propagate(False)		
+    def login(self):
+	username=self.e1.get()	
+	password=self.e2.get()
+
+	s.send(username)
+	s.recv(1)
+	s.send(password)
+	s.recv(1)
+	x=s.recv(30)
+	s.send('1')
+	if(x!="0"):
+		tkMessageBox.showinfo("ERROR", x)
+		sys.exit(0) 
+	endtime=s.recv(20)
+	s.send('0')
+
+
+	root.destroy()
+	global root1	
+	root1=Tk()	
+	#app = App1(root1,username,password)
+	app = App1(root1)
+
+class MyText(Frame):
+    def __init__(self, parent=None, *args, **kwargs):
+        Frame.__init__(self, parent)
+        self.pack()
+        self.text = Text(self, *args, **kwargs)
+        self.text.config(background='white')
+        self.text.pack(expand=YES, fill=BOTH)
+	open_button = Button(tk, text="Open File",activeforeground='blue',command=atext.set_from_file)
+	open_button.pack()
+    def get(self):
+        return self.text.get(1.0,"%s-1c" % END)
+    def set(self, astr):
+        self.text.delete(1.0, END)
+        self.text.insert(INSERT, astr)
+    def set_from_file(self):
+        afilename = tkFileDialog.askopenfilename()
+        if afilename:
+            try:
+                afile = open(afilename)
+                self.set(afile.read())
+                afile.close()
+            except Exception, e:
+                tkMessageBox.showwarning("File Problem","Couldn't read file '%s': %s" % (afilename, str(e)))
+
+class App1:
+	
+    #def __init__(self, master,un,nm):
+    def __init__(self, master):
+        #self.un=un
+        #self.nm=nm
+	master.title("PARTICIPANT PANEL")
+	frame = Frame(master, width=2000, height=1000, bg="black",  colormap="new")
+	frame.pack()
+	abc=tkFont.Font(family="Helvetica", size=40, weight ='bold')	
+	abc1=tkFont.Font(family="Helvetica", size=13, weight ='bold' )
+	abc2=tkFont.Font(family="Helvetica", size=20, weight ='bold' )
+	abc3=tkFont.Font(family="Helvetica", size=15, weight ='bold' )
+        
+	l=Label(frame, text="CODE SAGE", font=abc, bg="black",fg="#ffa700")
+        l.pack()
+	#l.place(relx=0.40, anchor=CENTER)
+	l=Label(frame, text="coding round", font=abc3,bg="black", fg="#ffa700")
+        l.pack()
+        l.place(relx=0.45, rely=0.2, anchor=CENTER)
+	#photo=PhotoImage(file="2.gif")
+	#ph=Label(frame,image=photo, bg="black",fg="#ffa700")
+	#ph.photo=photo
+	#ph.pack()
+	#ph.place(relx=0.03,rely=0.10)
+        
+        #l=Label(frame, text= str("Welcome  " + self.nm + " ( "+ self.un+ " )"), font=abc2, bg="black",fg="#ffa700")
+        #l.pack()
+	#l.place(relx=0.01, rely=0.01)
+
+
+	
+	button1 = self.button = Button(frame, text="           SUBMIT           ",font=abc1, command=self.submit)
+        button1.pack(side=LEFT,padx=15, pady=55)
+	button1.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button1.place(relx=0.85, rely=0.45, anchor=CENTER)
+	button2=self.button = Button(frame, text="       CHECK TIME        ", font=abc1, command=self.checktime)
+	button2.pack(side=LEFT,padx=15, pady=55)
+	button2.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button2.place(relx=0.85, rely=0.35, anchor=CENTER)			
+	button1 = self.button = Button(frame, text="    PREVIOUS RUNS    ",font=abc1, command=self.previousruns)
+        button1.pack(side=LEFT,padx=15, pady=55)
+	button1.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button1.place(relx=0.45, rely=0.65, anchor=CENTER)		
+	button1 = self.button = Button(frame, text="CHECK SCOREBOARD",font=abc1, command=self.checkscoreboard)
+        button1.pack(side=LEFT,padx=15, pady=55)
+	button1.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button1.place(relx=0.45, rely=0.55, anchor=CENTER)
+	button4 = self.button = Button(frame, text="VIEW",font=abc1, command=self.viewq)
+        button4.pack(side=LEFT,padx=15, pady=55)
+	button4.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button4.place(relx=0.45, rely=0.45, anchor=CENTER)
+	button5 = self.button = Button(frame, text="WORKSPACE",font=abc1, command=self.work1)
+        button5.pack(side=LEFT,padx=15, pady=55)
+	button5.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button5.place(relx=0.45, rely=0.35, anchor=CENTER)		
+	button1 = self.button = Button(frame, text="EXIT",font=abc1, command=self.quitcontest)
+        button1.pack(side=LEFT,padx=15, pady=55)
+	button1.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button1.place(relx=0.85, rely=0.95, anchor=CENTER)
+	############################################################
+	button6 = self.button = Button(frame, text="    CHAT    ",font=abc1, command=self.chat)
+        button6.pack(side=LEFT,padx=15, pady=55)
+	button6.configure(width = 20,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="#ffa700",highlightcolor="#ff4f03")
+	button6.place(relx=0.45, rely=0.75, anchor=CENTER)		
+	#button3 = self.button = Button(frame, text="EXIT",font=abc1, command=self.view)
+        #button3.pack(side=LEFT,padx=15, pady=55)
+	#button3.place(relx=0.50, rely=0.55, anchor=CENTER)				
+	
+	frame.propagate(False)
+    def view(self):
+	root1.destroy()
+	global root3
+	root3=Tk()
+	app=MyText(root3)
+
+   
+
+    def viewq(self):
+	main_();
+	
+    def work1(self):
+        obj=Work_space();
+	obj.work();
+
+    def submit(self):
+	s.send('1')
+	root1.destroy()
+	global root2	
+	root2=Tk()	
+	#app = App2(root2,self.nm)
+	app = App2(root2)
+    def checkscoreboard(self):
+	s.send('2')
+	scoreresult=s.recv(1024)
+	s.send('1')
+	tkMessageBox.showinfo("SCOREBOARD", scoreresult)
+	#root1.destroy()
+    def previousruns(self):
+	s.send('3')
+	scoreresult=s.recv(1024)
+	s.send('1')
+	tkMessageBox.showinfo("PREVIOUS RUNS", scoreresult)
+	#root1.destroy()
+
+    def myfunction(self):
+	os.system('python chat/pyChat.py')   #sonakshi
+	
+    def chat(self):
+	"""s.send('3')
+	scoreresult=s.recv(1024)
+	s.send('1')"""
+	#tkMessageBox.showinfo("PREVIOUS RUNS", "chat")
+	thread.start_new_thread(self.myfunction,())
+
+    def checktime(self):
+	s.send('4')
+	scoreresult=s.recv(1024)
+	s.send('1')
+	tkMessageBox.showinfo("TIME LEFT", scoreresult)
+	#root1.destroy()
+    def quitcontest(self):
+	s.send('5')
+	root1.destroy()
+   
+
+class App2:
+    filename=''
+    #def __init__(self, master,nn):
+    def __init__(self, master):
+        #self.nn=nn
+	master.title("SUBMIT SOLUTION")
+	frame = Frame(master, width=1000, height=600, bg="black",  colormap="new")
+	frame.pack()
+	
+	abc=tkFont.Font(family="Helvetica", size=40 , weight ='bold')	
+	abc1=tkFont.Font(family="Helvetica", size=13, weight ='bold' )
+	abc2=tkFont.Font(family="Helvetica", size=20, weight ='bold' )
+	abc3=tkFont.Font(family="Helvetica", size=15, weight ='bold' )
+
+	l=Label(frame, text="CODE SAGE", font=abc,bg="black", fg="#ffa700")
+        l.pack()
+	#l.place(relx=0.60, rely=0.345, anchor=CENTER)
+
+	l=Label(frame, text="coding round", font=abc3,bg="black", fg="#ffa700")
+        l.pack()
+        l.place(relx=0.45, rely=0.2, anchor=CENTER)
+	
+	#photo1=PhotoImage(file="jii.gif")
+	#ph=Label(frame,image=photo1, bg="black")
+	#ph.photo=photo1
+	#ph.pack()
+	#ph.place(relx=0.03,rely=0.10)
+        #l=Label(frame, text= str("      " + self.nn + "  your  SUBMITTING PANEL"), font=abc2, bg="#ffa700")
+        #l.pack()
+	#l.place(relx=0.1, rely=0.445 )
+	global var2
+	var2 = tk2.StringVar(frame)
+	var2.set('SELECT QUESTION')
+	queslist=s.recv(1024)
+	s.send('0')
+
+	choices = queslist.split('\n')
+	option = tk2.OptionMenu(frame, var2, *choices)
+	option.config(font=abc1)
+	option.pack(side='left', padx=10, pady=10)
+	
+	option.place(relx=0.60, rely=0.65, anchor=CENTER)
+	global var	
+	var = tk2.StringVar(frame)
+	var.set('SELECT LANGUAGE')
+ 	choices = ['py', 'c', 'cpp', 'java']
+	option = tk2.OptionMenu(frame, var, *choices)
+	option.config(font=abc1)
+	option.pack(side='left', padx=10, pady=10)
+	
+	option.place(relx=0.25, rely=0.65, anchor=CENTER)
+	
+	button1 = self.button = Button(frame, text="CHOOSE FILE",font=abc1, command=self.main)
+        button1.pack(side=LEFT,padx=15, pady=55)
+        #button1.configure(width = 10,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="lightyellow",highlightcolor="#ff4f03",)
+	button1.place(relx=0.60, rely=0.85, anchor=CENTER)	
+	button1 = self.button = Button(frame, text="SUBMIT",font=abc1, command=self.select)
+        button1.pack(side=LEFT,padx=15, pady=55)
+	button1.place(relx=0.25, rely=0.85, anchor=CENTER)
+	#button1.configure(width = 10,background="#ffa700", activebackground = "#ff4f03" ,activeforeground="lightyellow",highlightcolor="#ff4f03",)
+	'''button1=Label(frame,text=filename)	
+#	button1 = self.button = Button(frame, text=filename,font=abc1, command=self.select)        
+	button1.pack(side=LEFT,padx=15, pady=55)
+	button1.place(relx=0.60, rely=0.75, anchor=CENTER)	
+	'''
+	frame.propagate(False)
+
+    def select(self):
+	global filename
+	#ques = "value is %s" % var.get()
+	ques = var2.get() 	
+	#sf = "value is %s" % var.get()
+	ext = var.get()
+	s.send(ques)
+	x=s.recv(1)
+	s.send(ext)
+	x=s.recv(1)
+	s.send(str(filename.split('/')[-1]))
+	x=s.recv(1)
+	f=open (filename, "rb") 
+	data=f.read()
+	f.close()
+	s.send(str(len(data)))
+	s.recv(1)
+	s.send(data)
+	result=s.recv(1024)
+	s.send('0')
+	tkMessageBox.showinfo("RESULT", result)
+	root2.destroy()
+	global root1	
+	root1=Tk()	
+	app = App1(root1)
+
+    def main(self):
+	global filename		
+	filename = askopenfilename(filetypes=[("python files","*.py"),("c files","*.c"),("cpp files","*.cpp"),("java files","*.java")])
+#	root2=Tk()	
+#	app = App2(root2)
+	
+
+
+host=''
+port=50017
+s=socket.socket()
+try:
+	s.connect((host,port))
+except:
+	print 'Server down'
+	sys.exit(0)
+root = Tk()
+app = App(root)
+root.mainloop()
+

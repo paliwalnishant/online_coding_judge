@@ -1,0 +1,70 @@
+													Labtest I (M.M. : 20)
+													Time : 60 minutes
+Q1:
+write a code to calculate the factorial of the given number?
+First line of input contains number of testcases(T).Next T lines contains number N whose factorial is to be calculated.
+
+constraints:
+	T  < 100
+	N < 10
+sample test case:
+Input:
+5
+1
+2
+3
+4
+5
+Output:
+1
+2
+6
+24
+120
+			
+Q.2: write a code to increment the first 10 values entered by one ?
+
+sample test case:
+Input:
+	1	
+	2
+	3
+	4	
+	5
+	9
+	7
+	5
+	10
+Output:
+	2
+	3
+	4
+	5
+	6
+	10
+	8
+	6
+	11
+
+Q.3 : write a code to decrement the first 10 values entered by one ?
+sample test case:
+Input:
+         2
+	3
+	4
+	5
+	6
+	10
+	8
+	6
+	11
+Output:
+	1	
+	2
+	3
+	4	
+	5
+	9
+	7
+	5
+	10
